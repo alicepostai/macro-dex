@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15
+    container_name: macrodex_db
+    restart: always
+    environment:
+      POSTGRES_USER: user_macrodex
+      POSTGRES_PASSWORD: password_macrodex
+      POSTGRES_DB: db_macrodex
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
