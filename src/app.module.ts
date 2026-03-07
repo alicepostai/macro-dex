@@ -5,7 +5,9 @@ import { AppService } from './app.service';
 import { PhotosModule } from './photos/photos.module';
 import { Photo } from './photos/entities/photo.entity';
 import { AlbumsModule } from './albums/albums.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './users/user.module';
+import { Album } from './albums/entities/album.entity';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -13,10 +15,10 @@ import { UserModule } from './user/user.module';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'user_macrodex',
-      password: 'password_macrodex',
+      username: 'test',
+      password: 'test',
       database: 'db_macrodex',
-      entities: [Photo],
+      entities: [Photo, Album, User],
       synchronize: true,
     }),
     PhotosModule,
