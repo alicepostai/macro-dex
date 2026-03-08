@@ -16,5 +16,5 @@ export class User {
     password: string;
 
     @OneToMany(() => Album, (album) => album.user)
-    albums: Album[];
+    album: Album[];
 }

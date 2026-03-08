@@ -4,8 +4,8 @@ services:
     container_name: macrodex_db
     restart: always
     environment:
-      POSTGRES_USER: user_macrodex
-      POSTGRES_PASSWORD: password_macrodex
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: db_macrodex
     ports:
       - '5432:5432'

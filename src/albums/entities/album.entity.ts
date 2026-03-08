@@ -1,7 +1,8 @@
 import { Photo } from "src/photos/entities/photo.entity";
-import { User } from "src/users/entities/user.entity";
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity('album')
 export class Album {
     @PrimaryGeneratedColumn('uuid')
     id: string;
@@ -15,6 +16,6 @@ export class Album {
     @OneToMany(() => Photo, (photo) => photo.album)
     photos: Photo[];
 
-    @ManyToOne(() => User, (user) => user.albums)
+    @ManyToOne(() => User, (user) => user.album)
     user: User;
 }
