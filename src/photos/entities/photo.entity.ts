@@ -16,7 +16,7 @@ export class Photo {
     acquisitionDate: Date;
 
     @Column({type: 'integer'})
-    byteSize: number;
+    sizeInBytes: number;
 
     @Column({nullable: true})
     dominantColor: string;
