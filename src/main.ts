@@ -1,16 +1,28 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { join } from 'path';
 import * as express from 'express';
+import * as fs from 'fs';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    if (!fs.existsSync(join(process.cwd(), 'uploads'))) {
+        fs.mkdirSync(join(process.cwd(), 'uploads'), { recursive: true });
+    }
 
-  app.useGlobalPipes(new ValidationPipe());
-  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
-  app.enableCors(); 
+    const app = await NestFactory.create(AppModule);
 
-  await app.listen(process.env.PORT ?? 3000);
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        }),
+    );
+
+    app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
+    app.enableCors();
+
+    await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();

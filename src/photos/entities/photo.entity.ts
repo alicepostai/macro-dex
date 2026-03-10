@@ -1,24 +1,30 @@
-import { Album } from "src/albums/entities/album.entity";
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from "typeorm";
+import { Album } from 'src/albums/entities/album.entity';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    ManyToOne,
+} from 'typeorm';
 
 @Entity('photos')
 export class Photo {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column({ length: 120 })
     title: string;
 
-    @Column({type: 'text', nullable: true})
+    @Column({ type: 'text', nullable: true })
     description: string;
 
-    @Column({type: 'timestamp'})
+    @Column({ type: 'timestamp' })
     acquisitionDate: Date;
 
-    @Column({type: 'integer'})
+    @Column({ type: 'integer' })
     sizeInBytes: number;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     dominantColor: string;
 
     @Column()
@@ -27,6 +33,6 @@ export class Photo {
     @CreateDateColumn()
     createdAt: Date;
 
-    @ManyToOne(() => Album, (album) => album.photos)
+    @ManyToOne(() => Album, (album) => album.photos, { onDelete: 'CASCADE' })
     album: Album;
 }
