@@ -1,98 +1,93 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MacroDex
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+MacroDex é uma aplicação web para o gerenciamento e organização de álbuns de fotos. O sistema permite que usuários se cadastrem, criem álbuns personalizados e façam o upload de imagens. É encorajado que o conteúdo seja de fotos macro, porém atualmente não há nada que filtre isso.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Durante o upload, o sistema processa a imagem automaticamente pra extrair a data original da foto (via metadados EXIF) e a cor predominante, podendo exibir os dados em modo de tabela ou miniaturas.
 
-## Description
+### Repositórios
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- **Frontend:** https://github.com/alicepostai/macro-dex-frontend
+- **Backend:** https://github.com/alicepostai/macro-dex
 
-## Project setup
+---
+
+## Processo Criativo e Decisões Técnicas
+
+**1. O Tema (MacroDex):**
+A ideia veio devido ao meu gosto por tirar fotos macro variadas, especialmente de insetos e aracnídeos. Construí a aplicação pensando em um local onde pessoas com o mesmo hobbie pudessem catalogar e organizar essas capturas.
+
+**2. Tecnologias e Ferramentas:**
+O uso de **react** no frontend e **NestJS** com **TypeScript** no backend foi uma decisão tomada devido a minha vontade de me aprofundar nessas tecnologias. Optei por utilizar o **PostgreSQL** por ter maior familiaridade, subindo o banco com **docker** pela praticidade.
+
+O **Chakra UI** foi utilizado no React para construir os componentes de forma mais rápida e responsiva.
+
+A biblioteca **Sharp** foi usada no backend para varrer os canais RGB da imagem e calcular a média, convertendo o resultado em uma cor Hexadecimal. Utilizei também o **exif-parser** para ler os metadados do arquivo original e extrair a data e hora exatas em que a foto foi tirada, exibindo isso em cada foto.
+
+Para a comunicação entre frontend e backend utilizei o **Axios**, pois ele facilita a realização de requisições HTTP e permite centralizar configurações como a URL base da API e a inclusão automática do token de autenticação nos headers através de interceptors.
+
+O **React Router DOM** foi utilizado para gerenciar a navegação entre as páginas da aplicação, permitindo criar rotas como login, cadastro, dashboard e visualização de álbuns sem a necessidade de recarregar a página.
+
+A autenticação foi implementada utilizando **JWT (JSON Web Token)**. Após o login, o backend gera um token que é armazenado no frontend e enviado nas requisições subsequentes, visando proteger as rotas da API e garantir que só usuários autenticados possam acessar ou modificar seus próprios dados.
+
+Para o upload de arquivos utilizei o **Multer**, que é o middleware padrão do Node.js pra lidar com envio de arquivos multipart/form-data. Ele foi integrado ao NestJS através do FileInterceptor, permitindo salvar as imagens enviadas pelos usuários na pasta de uploads e disponibilizá-las depois através da API.
+
+---
+
+## Resumo de Tecnologias Utilizadas
+
+**Frontend:**
+
+- React + TypeScript
+- Chakra UI (Estilização e Componentes)
+- React Router DOM
+- Axios
+
+**Backend:**
+
+- Node.js + NestJS
+- TypeORM + PostgreSQL
+- JWT (Autenticação)
+- Multer (Upload de arquivos)
+- Sharp & Exif-parser (Processamento de imagem e extração de metadados)
+
+**Infraestrutura:**
+
+- Docker & Docker Compose
+
+---
+
+## Como executar o projeto localmente
+
+### 1. Banco de Dados (PostgreSQL via Docker)
+
+No diretório do **backend**, utilize o Docker Compose para subir o banco de dados rapidamente:
 
 ```bash
-$ npm install
+docker-compose up -d
 ```
 
-## Compile and run the project
+Certifique-se de ter a porta 5432 liberada na sua máquina.
+
+### 2. Iniciando o Backend
+
+Ainda no diretório do backend, instale as dependências e inicie o servidor em modo de desenvolvimento:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
+npm run start:dev
 ```
 
-## Run tests
+A API vai estar rodando em `http://localhost:3001`.
+
+### 3. Iniciando o Frontend
+
+No diretório do **frontend**, instale as dependências e inicie a aplicação:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
+npm start
 ```
 
-## Deployment
+A interface ficará disponível em `http://localhost:3000`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
